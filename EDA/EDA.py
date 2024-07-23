@@ -1,14 +1,14 @@
 import pandas as pd
+from unidecode import unidecode
 
 filmes = []
 diretores = []
 atores = []
 generos = []
 
-df = pd.read_csv('/imdb.csv')
+df = pd.read_csv('C:/Users/rafae/Code/Outros/Python/Projetos/Neo4j/imdb.csv')
 #print(df)
 
-# Generalizacao da Classificação Indicativa
 def classifica(classificacao):
     if classificacao == 'A':
         return '18'
@@ -45,29 +45,11 @@ def classifica(classificacao):
     else:
         return 'Unrated'
 
-# Criação das Tabelas Filmes / Generos / Diretores / Atores 
-def verifica_filme(filmes, filme, ano, rating, classificacao): 
-    b =classifica(classificacao)
-    a = filme+'_'+ano+'_'+f"{rating}"+'_'+b
-    if a not in filmes:
-        filmes.append(a)
-
-
-def verifica_genero(generos, genres):
-    #print(genres)
-    genres = genres.split(',')
-    #print(genres)
-    for genre in genres:     
-        if genre.strip() not in generos:
-            generos.append(genre.strip())
-          
-
-def verifica_diretor(diretores, dir): 
-    if dir not in diretores:
-        diretores.append(dir)
-
-
 def verifica_ator(atores, ator1, ator2, ator3, ator4): 
+    ator1 = unidecode(ator1).replace("'", '')
+    ator2 = unidecode(ator2).replace("'", '')
+    ator3 = unidecode(ator3).replace("'", '')
+    ator4 = unidecode(ator4).replace("'", '')
     if ator1 not in atores:
         atores.append(ator1)
     if ator2 not in atores:
@@ -77,32 +59,53 @@ def verifica_ator(atores, ator1, ator2, ator3, ator4):
     if ator4 not in atores:
         atores.append(ator4)
 
+def verifica_diretor(diretores, dir): 
+    dir = unidecode(dir).replace("'",'')
+    if dir not in diretores:
+        diretores.append(dir)
 
-# Percorre todos os filmes do dataset imdb, e preenche as tabelas FilmeS / Generos / Diretores / Atores        
+def verifica_filme(filmes, filme, ano, rating, classificacao): 
+    filme = unidecode(filme)
+    filme = filme.replace("'", "").replace('"', '')
+    b =classifica(classificacao)
+    if filme[0].isnumeric() == True:
+        a = 'The'+filme+'_'+ano+'_'+f"{rating}"+'_'+b
+    else:
+        a = filme+'_'+ano+'_'+f"{rating}"+'_'+b
+    if a not in filmes:
+        filmes.append(a)
+
+def verifica_genero(generos, genres):
+    genres = genres.split(',')
+    for genre in genres:     
+        genre = unidecode(genre.strip())
+        if genre not in generos:
+            generos.append(genre)
+
+cont = 0        
 for indice, linha in df.iterrows():
     verifica_filme(filmes, linha['Title'], linha['Released_Year'], linha['IMDB_Rating'], linha['Certificate'])
     verifica_diretor(diretores, linha['Director'])
     verifica_ator(atores, linha['Star1'], linha['Star2'], linha['Star3'], linha['Star4'])
     verifica_genero(generos, linha['Genre'])
     #x = input("Continuar: ")
-
+    cont += 1
+    if cont >= 150:
+        break
 
 for i in range (len(filmes)):
     filmes[i] = filmes[i].split("_")
 
-# Transformas as listas em Dataframes
 df_filme = pd.DataFrame(filmes, columns=['Title', 'Released_Year', 'Rating', 'Certificate'])
 df_diretor = pd.DataFrame(diretores, columns=['Nome'])
 df_ator = pd.DataFrame(atores, columns=['Nome'])
-df_genero = pd.DataFrame(generos, columns=['Gênero'])
+df_genero = pd.DataFrame(generos, columns=['Genero'])
 
-# Visualização
 #print(df_filme.head())
 #print(df_diretor.head())
 #print(df_ator.head())
 #print(df_genero.head())
 
-# Transforma os df em csvs
 df_filme.to_csv('filmes.csv', index=False, encoding='utf-8')
 df_diretor.to_csv('diretores.csv', index=False, encoding='utf-8')
 df_ator.to_csv('atores.csv', index=False, encoding='utf-8')
