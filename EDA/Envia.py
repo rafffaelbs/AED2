@@ -1,7 +1,7 @@
 from py2neo import Graph
 
 # Conectar ao Neo4j
-graph = Graph("bolt://localhost:7687", auth=("neo4j", "B8kCtcJ-uCoEelQKCdlYlMxCnol07758SF0ZfimNF-E"))
+graph = Graph("bolt://localhost:7687", auth=("neo4j", "password"))
 
 path = "C:/Users/rafae/Code/Outros/Python/Projetos/Neo4j/neo4j_relacionamentos.txt"
 with open(path, 'r') as file:
