@@ -17079,4 +17079,3 @@ MERGE (actor2)-[:ATUA_EM]->(movie)
 MERGE (actor3)-[:ATUA_EM]->(movie)
 MERGE (actor4)-[:ATUA_EM]->(movie)
 MERGE (dir)-[:DIRIGE]->(movie)
-
