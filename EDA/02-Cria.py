@@ -10,11 +10,12 @@ def cria_arquivo(nome, arq):
     print(f"Dados foram escritos no arquivo {nome_do_arquivo} com sucesso.")
 
 # Leitura dos arquivos CSV
-filmes = pd.read_csv('filmes.csv')
-generos = pd.read_csv('generos.csv')
-diretores = pd.read_csv('diretores.csv')
-atores = pd.read_csv('atores.csv')
-imdb = pd.read_csv('imdb.csv')
+filmes = pd.read_csv('C:/Users/rafae/Code/Outros/Python/Projetos/Neo4j/filmes.csv')
+generos = pd.read_csv('C:/Users/rafae/Code/Outros/Python/Projetos/Neo4j/generos.csv')
+diretores = pd.read_csv('C:/Users/rafae/Code/Outros/Python/Projetos/Neo4j/diretores.csv')
+atores = pd.read_csv('C:/Users/rafae/Code/Outros/Python/Projetos/Neo4j/atores.csv')
+imdb = pd.read_csv('C:/Users/rafae/Code/Outros/Python/Projetos/Neo4j/imdb.csv')
+filmes['Title'] = filmes['Title'].apply(str.title)
 
 # Criação dos comandos Cypher para filmes
 a = ''
@@ -72,7 +73,7 @@ for indice, linha in imdb.iterrows():
     ator3 = unidecode(linha['Star3'].replace("'", ""))
     ator4 = unidecode(linha['Star4'].replace("'", ""))
     diretor = unidecode(linha['Director'].replace("'", ""))
-    tit = unidecode(linha['Title']).replace("'", "")
+    tit = unidecode(linha['Title'].title()).replace("'", "")
     
     a += (f"MATCH (movie:Movie {{title: '{tit}'}})\n"    
           f"MATCH (actor1:Actor {{name: '{ator1}'}})\n"
