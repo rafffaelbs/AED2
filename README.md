@@ -6,4 +6,10 @@ O seguinte repositório é uma ferramenta para recomendação de filmes, baseado
 ## Arquivos
 Cada arquivo do repositório é responsável por uma certa coisa.
 
-original.py: pega o arquivo original e retira as tabelas que não serão necessárias
+transforma.py: 
+
+cria.py: 
+
+envia.py:
+
+requisições.py:
